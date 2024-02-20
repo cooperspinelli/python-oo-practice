@@ -1,28 +1,39 @@
+from random import choice
+
 class WordFinder:
     """Word Finder: finds random words from a dictionary."""
-    # init function takes in a string--> represents a path
-    # make a list of the words
-    # get len of list
-
-    # call helper function (random()) in a try catch block--> if file doesnt exist
-    # function called 'read file' inside the path ^
 
     def __init__(self, path):
+        """Creates attribute words and assigns it to be a list of words
+        in the file found at the input path
+        Also creates attribute path which saves the input path"""
+
+        self.path = path
+        self.words = self.__read_file__(path)
+
+    def __repr__(self):
+        """Returns representation of instance of WordFinder class"""
+        return f"WordFinder created from {self.path}"
+
+
+    def __read_file__(self, path):
+        """Takes in file path and returns list of words in that file
+        If file does not exist then it prints 'File does not exist' and
+        returns an empty list"""
+
+        words = []
+
         try:
-            self.words = self.__read_file__(path)
+            file = open(path)
+            for line in file:
+                words.append(line.rstrip())
+            file.close()
 
         except FileNotFoundError:
             print('File does not exist')
 
-    def __read_file__(self, path):
-        # takes in a file path--> either return a list of words present, or error
-        # if not found
-        words = []
-
-        file = open("/my/file.txt")
-
-        for line in file:
-            words.append(line.rstrip())
-
-        file.close()
         return words
+
+    def random(self):
+        """Returns a random word from self.words"""
+        return choice(self.words)
