@@ -1,5 +1,6 @@
 from random import choice
 
+
 class WordFinder:
     """Word Finder: finds random words from a dictionary."""
 
@@ -11,10 +12,11 @@ class WordFinder:
         self.path = path
         self.words = self.__read_file__(path)
 
+        print(f"{len(self.words)} words read")
+
     def __repr__(self):
         """Returns representation of instance of WordFinder class"""
         return f"WordFinder created from {self.path}"
-
 
     def __read_file__(self, path):
         """Takes in file path and returns list of words in that file
@@ -37,3 +39,28 @@ class WordFinder:
     def random(self):
         """Returns a random word from self.words"""
         return choice(self.words)
+
+
+class RandomWordFinder(WordFinder):
+    """Sub-class of WordFinder. Removes lines that start with '#' and empty
+    lines."""
+
+    def __read_file__(self, path):
+        """Takes in file path and returns list of words in that file
+        If file does not exist then it prints 'File does not exist' and
+        returns an empty list"""
+
+        words = []
+        invalid_characters = ['#', '\n']
+
+        try:
+            file = open(path)
+            for line in file:
+                if line[0] not in invalid_characters:
+                    words.append(line.rstrip())
+            file.close()
+
+        except FileNotFoundError:
+            print('File does not exist')
+
+        return words
